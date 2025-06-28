@@ -1,6 +1,33 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+
+// New FAQSection component
+const FAQSection = ({ faqs }) => (
+  <div className="card p-6 mt-8 lg:mt-0">
+    <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">
+      Frequently Asked Questions
+    </h3>
+    <div className="space-y-3">
+      {faqs.map((faq, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          className="bg-secondary-50 dark:bg-secondary-900/30 rounded-lg p-4 border border-secondary-100 dark:border-secondary-800"
+        >
+          <h4 className="font-semibold text-secondary-900 dark:text-white mb-2 text-sm">
+            {faq.question}
+          </h4>
+          <p className="text-secondary-600 dark:text-secondary-300 text-xs">
+            {faq.answer}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -38,7 +65,6 @@ const Contact = () => {
       setIsSubmitting(false);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
       // Reset status after 3 seconds
       setTimeout(() => setSubmitStatus(null), 3000);
     }, 2000);
@@ -108,7 +134,7 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid lg:grid-cols-3 gap-8 mb-0">
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -222,64 +248,42 @@ const Contact = () => {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6"
+            className="card p-6 flex flex-col justify-between"
           >
-            <div>
-              <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">
-                Contact Information
-              </h3>
-              <div className="space-y-4">
-                {contactInfo.map((info, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="flex items-start space-x-3"
-                  >
-                    <div className={`w-10 h-10 bg-secondary-100 dark:bg-secondary-800 rounded-lg flex items-center justify-center ${info.color}`}>
-                      {info.icon}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-secondary-900 dark:text-white mb-1">
-                        {info.title}
-                      </h4>
-                      {info.details.map((detail, idx) => (
-                        <p key={idx} className="text-secondary-600 dark:text-secondary-300 text-sm">
-                          {detail}
-                        </p>
-                      ))}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* FAQ Section */}
-            <div>
-              <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">
-                Quick Questions
-              </h3>
-              <div className="space-y-3">
-                {faqs.map((faq, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="card p-4"
-                  >
-                    <h4 className="font-semibold text-secondary-900 dark:text-white mb-2 text-sm">
-                      {faq.question}
+            <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">
+              Contact Information
+            </h3>
+            <div className="space-y-4">
+              {contactInfo.map((info, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="flex items-start space-x-3"
+                >
+                  <div className={`w-10 h-10 bg-secondary-100 dark:bg-secondary-800 rounded-lg flex items-center justify-center ${info.color}`}>
+                    {info.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-secondary-900 dark:text-white mb-1">
+                      {info.title}
                     </h4>
-                    <p className="text-secondary-600 dark:text-secondary-300 text-xs">
-                      {faq.answer}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
+                    {info.details.map((detail, idx) => (
+                      <p key={idx} className="text-secondary-600 dark:text-secondary-300 text-sm">
+                        {detail}
+                      </p>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
+        </div>
+
+        {/* FAQ Section: full width below the grid */}
+        <div className="mt-12 mb-12">
+          <FAQSection faqs={faqs} />
         </div>
 
         {/* Map/Office Section */}
